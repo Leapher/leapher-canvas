@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>Leapher's Canvas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="fbox">
+    <div class ="tool-panel">
+      <h1>Leapher's Canvas</h1>
+      <label for="size-input" value="30">Введите размер поля:</label>
+      <input type="number" id="size-input" class="size-input">
+      <button id="reset-button">Пересоздать</button>
+      <label for="brush-size" id="brush-label"></label>
+      <input type="range" id="brush-size" name="Размер кисти" min="1" max="41" value="1" step="2" />
+      <div style="display:flex; gap:12px; margin: 1rem 0;">
+        <label for="color-picker">Цвет</label>
+        <input type="color" id="color-picker" class="color-picker" value="#ff0000">
+      </div>
+      <div style="display:flex; justify-content:center; gap:12px;" id="modes">
+        <button onclick="setMode(this, 'brush')">Кисть</button>
+        <button onclick="setMode(this, 'eraser')">Ластик</button>
+        <button onclick="setMode(this,'fill')">Заливка</button>
+      </div>
+      <!-- <label for="eraser">Ластик</label> -->
+      <!-- <input type="checkbox" id="eraser" class="eraser"> -->
+      <label for="grid-toggle">Отключить сетку</label>
+      <input type="checkbox" id="grid-toggle" class="grid-toggle"> 
+      <button id="clear-button">Очистить</button>
+      <button id="save-button">Сохранить картинку</button>
+      <button id="save-preset">Сохранить пресет</button>
+      <label for="file-input">Загрузить пресет</label>
+      <input type="file" id="file-input" onchange="showFile(this)">
+  </div>
+  <canvas id="canvas" width="120px" height="120px"></canvas>
+  </div>
+    
+
+    <script src="script.js" type="text/javascript"></script>
+</body>
+</html>

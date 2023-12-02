@@ -1,0 +1,84 @@
+body {
+  background-color: #589afc;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.fbox {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: #000000;
+}
+
+.tool-panel {
+  display: flex;
+  flex-direction: column;
+  background-color: #afcdfa;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+
+canvas {
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.color-picker {
+  margin-right: 10px;
+}
+
+label {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+#eraser {
+  transform:scale(2)
+}
+#grid-toggle {
+  transform:scale(2)
+}
+#color-picker {
+  margin-left: 93;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform:scale(1.3);
+}
+#clear-button {
+  margin-top: 10px;
+}
+#fill-button {
+  margin-top: 10px;
+}
+#save-button {
+  margin-top: 5px;
+}
+#save-preset {
+  margin-top: 5px;
+}
+#file-input {
+  margin-top: 5px;
+}
+
+button {
+  border-radius: 4px;
+  border-style: none;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #bababa;
+}
