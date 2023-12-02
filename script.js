@@ -9,6 +9,8 @@ const clearButton = document.getElementById("clear-button");
 const resetButton = document.getElementById("reset-button");
 const canvas = document.getElementById("canvas");
 const savePreset = document.getElementById("save-preset");
+const loadPreset = document.getElementById("load-preset");
+const fileInput = document.getElementById('file-input');
 
 const ctx = canvas.getContext("2d");
 
@@ -145,7 +147,7 @@ function fillCanvas(color, show) {
   }
 }
 
-function drawCell(x, y, brushSize, smode=null, fillClr="") {
+function drawCell(x, y, brushSize, smode=null, fillClr="", color) {
     smode = smode || mode
     //console.log(x,y,brushSize)
     if (smode==="eraser") {
@@ -164,33 +166,37 @@ function drawCell(x, y, brushSize, smode=null, fillClr="") {
 
         // 
         if (fillClr=="") {
-            drawCell(x,y,1,"brush", selectedColor)
+            drawCell(x,y,1,"brush", null, selectedColor)
             fillClr = clr
         }
         if (clr!=fillClr) {
+            console.log("WTF")
             return
         }
 
-        drawCell(x,y,1,"brush")
+        drawCell(x,y,1,"brush", null, selectedColor)
         // l
-        x>0 && drawCell(x-1, y, 1, smode, clr)
+        x>0 && drawCell(x-1, y, 1, smode, clr, selectedColor)
         // r
-        x<gridSize-1 && drawCell(x+1, y, 1, smode, clr)
+        x<gridSize-1 && drawCell(x+1, y, 1, smode, clr, selectedColor)
         // t
-        y>0 && drawCell(x, y-1, 1, smode, clr)
+        y>0 && drawCell(x, y-1, 1, smode, clr, selectedColor)
         // b
-        y<gridSize-1 && drawCell(x, y+1, 1, smode, clr)
+        y<gridSize-1 && drawCell(x, y+1, 1, smode, clr, selectedColor)
 
 
         return
     }
-  
-    ctx.fillStyle = selectedColor;
+    if (smode=="fill") {
+      ctx.fillcolor = clr;
+    } else {
+      ctx.fillStyle = color;
+    }
     ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
     if (showGrid) {
         ctx.strokeStyle = "#ccc";
     } else {
-        ctx.strokeStyle = selectedColor;
+        ctx.strokeStyle = color;
     }
     ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
 }
@@ -261,12 +267,12 @@ canvas.addEventListener("mousemove", function (event) {
       for (let i = 0; i < steps; i++) {
         const interpX = previousX + stepX * i;
         const interpY = previousY + stepY * i;
-        drawCell(Math.round(interpX), Math.round(interpY), BrushSize);
+        drawCell(Math.round(interpX), Math.round(interpY), BrushSize, null, null, selectedColor);
       }
     }
     
     if (BrushSize == 1) {
-      drawCell(x, y, BrushSize);
+      drawCell(x, y, BrushSize, null, null, selectedColor);
     } else {
       var RD = (BrushSize - 1) / 2;
       crX = x - RD;
@@ -274,7 +280,7 @@ canvas.addEventListener("mousemove", function (event) {
       for (let i = 0; i < BrushSize; i++) {
         for (let j  = 0; j < BrushSize; j++) {
           console.log(RD, crX, crY)
-          drawCell(crX + i, crY + j, BrushSize);
+          drawCell(crX + i, crY + j, BrushSize, null, null, selectedColor);
         }
       }
     }
@@ -295,15 +301,49 @@ resetButton.addEventListener("click", function () {
   preCreate();
 });
 
+loadPreset.addEventListener("click", function () {
+  var selectedFile = fileInput.files[0];
+  console.log(`${selectedFile.name}`);
+  let reader = new FileReader();
+  reader.readAsText(selectedFile);
+  reader.onload = function() {
+    console.log(reader.result);
+    fileContent = reader.result;
+    const lines = fileContent.split('\n');
+    if (lines[0] != "THIS IS LEAPHER CANVAS PRESET") {
+      return
+    }
+    for (let i = 1; i < lines.length - 1; i++) {
+      var line = lines[i];
+      var line = String("\"" + line + "\"");
+      console.log(line);
+      console.log(`${i + 1}: ${line}`);
+      var cellData = JSON.parse(JSON.parse(line));
+      console.log(cellData);
+      console.log(typeof(cellData))
+      //var cellData = eval('(' + line + ')');
+      x = cellData[0];
+      y = cellData[1];
+      clr = cellData[2];
+      console.log(x, y, clr)
+      drawCell(x, y, 1, null, null, clr)
+    }
+  }
+}
+)
+
+
 savePreset.addEventListener("click", function() {
   var fileContent = "THIS IS LEAPHER CANVAS PRESET\n";
   for (let x = 0; x < gridSize; x++) {
     for (let y = 0; y < gridSize; y++) {
       let clr = ctx.getImageData(x * cellSize + (cellSize / 2), y * cellSize + (cellSize / 2), 1, 1).data
-      clr = rgbToHex(clr[0], clr[1], clr[2])
-      contentPlus = "[" + String(x) + ", " + String(y) + ", " + String(clr) + "]" + "\n";
+      clr = rgbToHex(clr[0], clr[1], clr[2]);
+      color = "\\" + "\"" + String(clr) + "\\" + "\"";
+      console.log(color);
+      contentPlus = "[" + String(x) + ", " + String(y) + ", " +  color + "]" + "\n";
       fileContent += contentPlus;
-      console.log(x, y, clr);
+      console.log(x, y, color);
     }
   }
   var blob = new Blob([fileContent], { type: "text/plain" });
