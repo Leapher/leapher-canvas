@@ -28,10 +28,11 @@
       <label for="grid-toggle">Отключить сетку</label>
       <input type="checkbox" id="grid-toggle" class="grid-toggle"> 
       <button id="clear-button">Очистить</button>
-      <button id="save-button">Сохранить картинку</button>
-      <button id="save-preset">Сохранить пресет</button>
+      <button id="save-button">Сохранить как картинку</button>
+      <button id="save-preset">Сохранить как пресет</button>
       <label for="file-input">Загрузить пресет</label>
-      <input type="file" id="file-input" onchange="showFile(this)">
+      <input type="file" id="file-input" accept="text/txt">
+      <button id="load-preset">Загрузить пресет</button>
   </div>
   <canvas id="canvas" width="120px" height="120px"></canvas>
   </div>
