@@ -11,6 +11,7 @@ const canvas = document.getElementById("canvas");
 const savePreset = document.getElementById("save-preset");
 const loadPreset = document.getElementById("load-preset");
 const fileInput = document.getElementById('file-input');
+var fileNameInput = document.getElementById('name-input');
 
 const ctx = canvas.getContext("2d");
 
@@ -117,12 +118,30 @@ function drawGrid(show) {
   }
 }
 
+
 function preCreate() {
   presize = sizeInput.value
   if (presize == null) {
     presize = 30
   }
-  createGrid(parseInt(presize));
+  if (presize > 1024) {
+    iziToast.error({
+      // ERROR > 1024PX
+      title: 'Ошибка! ',
+      message: 'Максимальный размер холста 1024 пикселей',
+      position: 'topCenter',
+      transitionIn: 'bounceInUp',
+      progressBar: false,
+      balloon: true,
+      timeout: 2500,
+      transitionOut: 'flipOutX',
+      close: false,
+      icon: 'https://cdn.usesaturn.xyz/icons8-error-48.png',
+      
+    });
+  } else {
+    createGrid(parseInt(presize));
+  }
 }
 
 function createGrid(size) {
@@ -268,6 +287,7 @@ canvas.addEventListener("mousemove", function (event) {
         const interpX = previousX + stepX * i;
         const interpY = previousY + stepY * i;
         drawCell(Math.round(interpX), Math.round(interpY), BrushSize, null, null, selectedColor);
+        console.log(BrushSize)
       }
     }
     
@@ -353,7 +373,8 @@ savePreset.addEventListener("click", function() {
   var blob = new Blob([fileContent], { type: "text/plain" });
   var downloadLink = document.createElement("a");
   downloadLink.href = URL.createObjectURL(blob);
-  downloadLink.download = "LeapherCanvas_Preset.txt";
+  var fileName = fileNameInput.value;
+  downloadLink.download = `${fileName}` + `Preset.txt`;
   downloadLink.click();
 });
 
@@ -363,6 +384,7 @@ createGrid(gridSize); // Первоначальное создание
 saveButton.addEventListener("click", () => {
     const link = document.createElement("a");
     link.href = canvas.toDataURL(); // Получение данных URL изображения с canvas
-    link.download = "leapher_canvas.png"; // Имя файла для сохранения
+    var fileName = fileNameInput.value;
+    link.download = `${fileName}` + `.png`;; // Имя файла для сохранения
     link.click(); // Эмуляция нажатия на ссылку для загрузки файла
 });
