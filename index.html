@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://bootstraptema.ru/plugins/2017/izitoast/iziToast.min.css" />
+    <script src="https://bootstraptema.ru/plugins/2017/izitoast/iziToast.min.js"></script>
 </head>
 <body>
   <div class="fbox">
     <div class ="tool-panel">
       <h1>Leapher's Canvas</h1>
-      <label for="size-input" value="30">Введите размер поля:</label>
-      <input type="number" id="size-input" class="size-input">
+      <input type="number" id="size-input" class="size-input" placeholder="Введите размер поля">
       <button id="reset-button">Пересоздать</button>
       <label for="brush-size" id="brush-label"></label>
       <input type="range" id="brush-size" name="Размер кисти" min="1" max="41" value="1" step="2" />
@@ -25,13 +26,16 @@
       </div>
       <!-- <label for="eraser">Ластик</label> -->
       <!-- <input type="checkbox" id="eraser" class="eraser"> -->
-      <label for="grid-toggle">Отключить сетку</label>
-      <input type="checkbox" id="grid-toggle" class="grid-toggle"> 
-      <button id="clear-button">Очистить</button>
+      <div style="display:flex; justify-content: center; gap: 12px; margin-top: 5px;">
+        <label for="grid-toggle">Отключить сетку</label>
+        <input type="checkbox" id="grid-toggle" class="grid-toggle"> 
+      </div>
+      <button id="clear-button">Очистить холст</button>
+      <label for="save-button">Сохранить/загрузить холст</label>
+      <input type="text" id="name-input" class="name-input" placeholder="Название холста">
       <button id="save-button">Сохранить как картинку</button>
       <button id="save-preset">Сохранить как пресет</button>
-      <label for="file-input">Загрузить пресет</label>
-      <input type="file" id="file-input" accept="text/txt">
+      <input type="file" id="file-input" accept=".txt">
       <button id="load-preset">Загрузить пресет</button>
   </div>
   <canvas id="canvas" width="120px" height="120px"></canvas>
