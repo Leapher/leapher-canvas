@@ -69,6 +69,7 @@ gridToggle.addEventListener("change", (event) => {
     showGrid = !event.target.checked;
     drawGrid(showGrid);
   } else {
+    gridToggle.checked = false;
     event.preventDefault();
   }
 });
@@ -170,7 +171,6 @@ function drawCell(x, y, brushSize, smode=null, fillClr="", color) {
             fillClr = clr
         }
         if (clr!=fillClr) {
-            console.log("WTF")
             return
         }
 
@@ -279,7 +279,6 @@ canvas.addEventListener("mousemove", function (event) {
       crY = y - RD;
       for (let i = 0; i < BrushSize; i++) {
         for (let j  = 0; j < BrushSize; j++) {
-          console.log(RD, crX, crY)
           drawCell(crX + i, crY + j, BrushSize, null, null, selectedColor);
         }
       }
@@ -297,36 +296,41 @@ canvas.addEventListener("mouseup", function (event) {
   previousY = null;
 });
 
-resetButton.addEventListener("click", function () {
-  preCreate();
+resetButton.addEventListener("click", function (event) {
+  if (confirm("Данное действие сбросит ваш текущий рисунок!")) {
+    preCreate();
+  } else {
+    event.preventDefault();
+  }
 });
 
 loadPreset.addEventListener("click", function () {
   var selectedFile = fileInput.files[0];
-  console.log(`${selectedFile.name}`);
   let reader = new FileReader();
   reader.readAsText(selectedFile);
   reader.onload = function() {
-    console.log(reader.result);
+    //console.log(reader.result);
     fileContent = reader.result;
     const lines = fileContent.split('\n');
     if (lines[0] != "THIS IS LEAPHER CANVAS PRESET") {
+      console.log("Error: Provided file is not an LeapherCanvas Preset")
       return
     }
+    console.log(`Succesfully loaded preset with name ${selectedFile.name}`);
     for (let i = 1; i < lines.length - 1; i++) {
       var line = lines[i];
       var line = String("\"" + line + "\"");
-      console.log(line);
-      console.log(`${i + 1}: ${line}`);
+      //console.log(line);
+      //console.log(`${i + 1}: ${line}`);
       var cellData = JSON.parse(JSON.parse(line));
-      console.log(cellData);
-      console.log(typeof(cellData))
+      //console.log(cellData);
+      //console.log(typeof(cellData))
       //var cellData = eval('(' + line + ')');
       x = cellData[0];
       y = cellData[1];
       clr = cellData[2];
-      console.log(x, y, clr)
-      drawCell(x, y, 1, null, null, clr)
+      //console.log(x, y, clr)
+      drawCell(x, y, 1, "brush", null, clr)
     }
   }
 }
@@ -340,10 +344,10 @@ savePreset.addEventListener("click", function() {
       let clr = ctx.getImageData(x * cellSize + (cellSize / 2), y * cellSize + (cellSize / 2), 1, 1).data
       clr = rgbToHex(clr[0], clr[1], clr[2]);
       color = "\\" + "\"" + String(clr) + "\\" + "\"";
-      console.log(color);
+      //console.log(color);
       contentPlus = "[" + String(x) + ", " + String(y) + ", " +  color + "]" + "\n";
       fileContent += contentPlus;
-      console.log(x, y, color);
+      //console.log(x, y, color);
     }
   }
   var blob = new Blob([fileContent], { type: "text/plain" });
