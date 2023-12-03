@@ -1,5 +1,6 @@
 body {
-  background-color: #589afc;
+  background: rgb(88,154,252);
+  background: linear-gradient(125deg, rgba(88,154,252,1) 13%, rgba(96,88,252,1) 60%);
   height: 100vh;
   margin: 0;
   font-family: 'Arial', sans-serif;
@@ -17,7 +18,8 @@ body {
 .tool-panel {
   display: flex;
   flex-direction: column;
-  background-color: #afcdfa;
+  background: rgb(133,182,255);
+  background: linear-gradient(125deg, rgba(133,182,255,1) 0%, rgba(88,152,252,1) 100%);
   border-radius: 8px;
   padding: 1rem;
 }
@@ -47,14 +49,17 @@ label {
   transform:scale(2)
 }
 #grid-toggle {
-  transform:scale(2)
+  transform:scale(2);
+  display: flex
 }
 #color-picker {
-  margin-left: 93;
+  cursor: pointer;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  transform:scale(1.3);
+  width: 200px;
+  height: 32px;
+  border: none;
+  background-color: #00000000;
+  border-radius: 1px;
 }
 #clear-button {
   margin-top: 10px;
@@ -69,6 +74,9 @@ label {
   margin-top: 5px;
 }
 #file-input {
+  margin-top: 5px;
+}
+#load-preset {
   margin-top: 5px;
 }
 
