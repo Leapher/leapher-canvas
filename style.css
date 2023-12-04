@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
 body {
   background: rgb(88,154,252);
   background: linear-gradient(125deg, rgba(88,154,252,1) 13%, rgba(96,88,252,1) 60%);
@@ -62,7 +64,10 @@ label {
   border-radius: 1px;
 }
 #clear-button {
-  margin-top: 10px;
+  margin-top: 5px;
+}
+#generate-Noise {
+  margin-top: 5px;
 }
 #fill-button {
   margin-top: 10px;
@@ -80,11 +85,13 @@ label {
   margin-top: 5px;
 }
 
+
 button {
   border-radius: 4px;
   border-style: none;
   padding: .5rem 1rem;
   cursor: pointer;
+  font-family: 'Russo One';
 }
 
 button:hover {
