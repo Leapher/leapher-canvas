@@ -10,7 +10,7 @@
 <body>
   <div class="fbox">
     <div class ="tool-panel">
-      <h1>Leapher's Canvas</h1>
+      <h1 style="font-family: Questrial;"><b>Leapher's Canvas</b></h1>
       <input type="number" id="size-input" class="size-input" placeholder="Введите размер поля">
       <button id="reset-button">Пересоздать</button>
       <label for="brush-size" id="brush-label"></label>
@@ -30,8 +30,9 @@
         <label for="grid-toggle">Отключить сетку</label>
         <input type="checkbox" id="grid-toggle" class="grid-toggle"> 
       </div>
+      <button id="generate-noise">Сгенерировать шум</button>
       <button id="clear-button">Очистить холст</button>
-      <label for="save-button">Сохранить/загрузить холст</label>
+      <label for="name-input">Сохранить/загрузить холст</label>
       <input type="text" id="name-input" class="name-input" placeholder="Название холста">
       <button id="save-button">Сохранить как картинку</button>
       <button id="save-preset">Сохранить как пресет</button>
