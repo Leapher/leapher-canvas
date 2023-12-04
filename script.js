@@ -11,6 +11,7 @@ const canvas = document.getElementById("canvas");
 const savePreset = document.getElementById("save-preset");
 const loadPreset = document.getElementById("load-preset");
 const fileInput = document.getElementById('file-input');
+const generateNoise = document.getElementById('generate-noise');
 var fileNameInput = document.getElementById('name-input');
 
 const ctx = canvas.getContext("2d");
@@ -171,12 +172,16 @@ function drawCell(x, y, brushSize, smode=null, fillClr="", color) {
     smode = smode || mode
     //console.log(x,y,brushSize)
     if (smode==="eraser") {
-        // Исправленный ластик - возвращаем цвет и оставляем границу
         ctx.fillStyle = "#fff";
         ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        if (showGrid) {
+          ctx.strokeStyle = "#ccc";
+      } else {
+          ctx.strokeStyle = color;
         ctx.strokeStyle = "#ccc";
-        ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
-        return
+      ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+      }
+      return
     } 
 
     if (smode==="fill") {
@@ -319,6 +324,20 @@ canvas.addEventListener("mouseup", function (event) {
 resetButton.addEventListener("click", function (event) {
   if (confirm("Данное действие сбросит ваш текущий рисунок!")) {
     preCreate();
+  } else {
+    event.preventDefault();
+  }
+});
+
+generateNoise.addEventListener("click", function (event) {
+  if (confirm("Данное действие сбросит ваш текущий рисунок!")) {
+    for(x = 0; x < gridSize; x++) {
+      for (y = 0; y < gridSize; y++) {
+        rgb = [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)]
+        color = rgbToHex(rgb[0], rgb[1], rgb[2])
+        drawCell(x, y, 1, null, null, color)
+      }
+    }
   } else {
     event.preventDefault();
   }
