@@ -129,7 +129,7 @@ function preCreate() {
     iziToast.error({
       // ERROR > 1024PX
       title: 'Ошибка! ',
-      message: 'Максимальный размер холста 1024 пикселей',
+      message: 'Максимальный размер холста 1024x1024',
       position: 'topCenter',
       transitionIn: 'bounceInUp',
       progressBar: false,
@@ -137,8 +137,6 @@ function preCreate() {
       timeout: 2500,
       transitionOut: 'flipOutX',
       close: false,
-      icon: 'https://cdn.usesaturn.xyz/icons8-error-48.png',
-      
     });
   } else {
     createGrid(parseInt(presize));
@@ -239,7 +237,7 @@ canvas.addEventListener("click", function (event) {
     crY = y - RD;
     for (let i = 0; i < BrushSize; i++) {
       for (let j  = 0; j < BrushSize; j++) {
-        console.log(RD, crX, crY)
+        //console.log(RD, crX, crY)
         drawCell(crX + i, crY + j, BrushSize);
       }
     }
@@ -291,23 +289,21 @@ canvas.addEventListener("mousemove", function (event) {
       for (let i = 0; i < steps; i++) {
         const interpX = previousX + stepX * i;
         const interpY = previousY + stepY * i;
-        drawCell(Math.round(interpX), Math.round(interpY), BrushSize, null, null, selectedColor);
-        console.log(BrushSize)
-      }
-    }
-    
-    if (BrushSize == 1) {
-      drawCell(x, y, BrushSize, null, null, selectedColor);
-    } else {
-      var RD = (BrushSize - 1) / 2;
-      crX = x - RD;
-      crY = y - RD;
-      for (let i = 0; i < BrushSize; i++) {
-        for (let j  = 0; j < BrushSize; j++) {
-          drawCell(crX + i, crY + j, BrushSize, null, null, selectedColor);
+        if (BrushSize == 1) {
+          drawCell(interpX, interpY, BrushSize, null, null, selectedColor);
+        } else {
+          var RD = (BrushSize - 1) / 2;
+          crX = interpX - RD;
+          crY = interpY - RD;
+          for (let i = 0; i < BrushSize; i++) {
+            for (let j = 0; j < BrushSize; j++) {
+              drawCell(crX + i, crY + j, BrushSize, null, null, selectedColor);
+            }
+          }
         }
       }
     }
+    
     
     previousX = x;
     previousY = y;
@@ -352,7 +348,18 @@ loadPreset.addEventListener("click", function () {
     fileContent = reader.result;
     const lines = fileContent.split('\n');
     if (lines[0] != "THIS IS LEAPHER CANVAS PRESET") {
-      console.log("Error: Provided file is not an LeapherCanvas Preset")
+      iziToast.error({
+        // ERROR > NOTPRESET
+        title: 'Ошибка! ',
+        message: 'Указанный файл не является пресетом LeapherCanvas',
+        position: 'topCenter',
+        transitionIn: 'bounceInUp',
+        progressBar: false,
+        balloon: true,
+        timeout: 2500,
+        transitionOut: 'flipOutX',
+        close: false,
+      });
       return
     }
     console.log(`Succesfully loaded preset with name ${selectedFile.name}`);
